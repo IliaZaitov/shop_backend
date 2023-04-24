@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <title></title>
+    <meta content="">
+    <style></style>
+  </head>
+  <body></body>
+  <script type="text/javascript">
+    async function f() {
+      let response = await fetch ("http://127.0.0.1:5000/api/good");
+      if (response.ok) {
+        let x = await response.json();
+        for (var i = 0; i < x.length; i++) {
+            console.log(x[i].name);
+        }
+
+      }
+    }
+    window.onload=f();
+  </script>
+</html>

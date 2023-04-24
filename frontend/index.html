@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Главная страница</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="static/css/index.css">
+  </head>
+  <body>
+    <header>
+<!--    logo - функция нажатия. для перехода на главную страницу
+      button - навигация
+      input - поиск по сайту, с иконкой лупы -->
+      <div class="logo" id="logo">
+        <a href="index.html">
+        <img src="static/img/logo.png" alt="логотип" title="магазинчик">
+        </a>
+      </div>
+
+      <div class="search" id="search">
+        <input type="text">
+      </div>
+
+      <div class="navMain" id="navMain">
+        <button>О компании</button>
+        <button>Контакты</button>
+        <button>Каталог</button>
+        <button>Регистрация</button>
+        <button>Акции</button>
+      </div>
+    </header>
+    <div class="wrapper">
+      <div class="header_fake"></div>
+
+
+
+
+
+      <nav>
+
+      </nav>
+
+
+      <article class="" id = "goodwrapper">
+        <div v-for="good in goods">
+        <good-div v-bind:good="good"></good-div>
+      </div>
+
+      </article>
+
+
+      <footer>
+
+
+
+      </footer>
+    </div>
+    <script src="vue.js"></script>
+    <script src="static/js/index.js"></script>
+
+
+
+  </body>
+</html>
