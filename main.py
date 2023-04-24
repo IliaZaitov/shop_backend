@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin
 from models import db, Good
 
 app = Flask(__name__)
@@ -7,6 +8,9 @@ app.config['SECRET_KEY'] = "this_badass_secret_key"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
+
+cors = CORS(app)
+
 
 @app.before_first_request
 def bfr():
@@ -31,5 +35,11 @@ def good_page():
         for good in goods:
             listgoods.append(good.json)
         return jsonify(listgoods)
+
+@app.route("/api/good/<g_id>", methods = ["get","put","delete"])
+def good_instance_page(g_id):
+    if request.method == "GET":
+        good = Good.query.filter_by(id=g_id).first()
+        return good.json
 
 app.run(debug=True)

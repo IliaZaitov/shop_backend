@@ -8,12 +8,12 @@ class Good(db.Model):
     name = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(500))
     price = db.Column(db.Float(), nullable=False)
-    quantity = db.Column(db.Integer(), nullable=False)
+    max_quantity = db.Column(db.Integer(), nullable=False)
 
     def __init__(self,name,price,quantity):
         self.name = name
         self.price = price
-        self.quantity = quantity
+        self.max_quantity = quantity
 
     @property
     def json(self):
