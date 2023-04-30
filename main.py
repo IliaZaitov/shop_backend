@@ -42,4 +42,9 @@ def good_instance_page(g_id):
         good = Good.query.filter_by(id=g_id).first()
         return good.json
 
+@app.route("/api/user", methods=["post",'get'])
+def user_page():
+    if request.method=="GET":
+        pass
+
 app.run(debug=True)

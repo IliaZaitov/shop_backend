@@ -20,3 +20,7 @@ class Good(db.Model):
         dictionary = self.__dict__
         dictionary.pop('_sa_instance_state')
         return dictionary
+
+#add class User
+
+#add class Cart
