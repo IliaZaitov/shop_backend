@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
-from models import db, Good
+from models import db, Good, User, Cart
 
 app = Flask(__name__)
 
@@ -24,6 +24,15 @@ def bfr():
     db.session.add(good2)
     db.session.add(good3)
     db.session.commit()
+    user1 = User('Login', 'Mail', 'Password')
+    user2 = User('Admin', 'Admin@mail.ru', 'Admin')
+    user2.is_admin=True
+    db.session.add(user1)
+    db.session.add(user2)
+    db.session.commit()
+    cart1 = Cart(good1.id,user1.id,2)
+    db.session.add(cart1)
+    db.session.commit()
 
 
 
@@ -42,9 +51,40 @@ def good_instance_page(g_id):
         good = Good.query.filter_by(id=g_id).first()
         return good.json
 
+
 @app.route("/api/user", methods=["post",'get'])
-def user_page():
-    if request.method=="GET":
-        pass
+def users_page():
+    if request.method == "GET":
+        users = User.query.all()
+        userlist=[]
+        for user in users:
+            userlist.append(user.json)
+        return jsonify(userlist)
+    #if request.method == "POST":
+
+@app.route("/api/user/<u_id>", methods=["put",'get','delete'])
+def user_page(u_id):
+    if request.method == "GET":
+        user = User.query.filter_by(id=u_id).first()
+        if user:
+            return user.json
+        else:
+            return jsonify({"message":"User not found"})
+    if request.method == "DELETE":
+        user = User.query.filter_by(id=u_id).first_or_404()
+        db.session.delete(user)
+        db.session.commit()
+        return 'Пользователь удален'
+
+
+@app.route("/api/cart", methods=["post",'get'])
+def carts_page():
+    if request.method == "GET":
+        carts = Cart.query.all()
+        cartlist=[]
+        for cart in carts:
+            cartlist.append(cart.json)
+        return jsonify(cartlist)
+    #if request.method == "POST":
 
 app.run(debug=True)
