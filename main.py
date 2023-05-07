@@ -54,6 +54,7 @@ def good_page():
         return jsonify(listgoods)
     #добавить метод POST
     #В нем реализовать добавление товара
+    #Григорий
 
 @app.route("/api/good/<g_id>", methods = ["get","put","delete"])
 def good_instance_page(g_id):
@@ -62,6 +63,7 @@ def good_instance_page(g_id):
         return good.json
     # добавить методы PUT и DELETE
     # В них реализовать изменение и удаление товара
+    # Иван
 
 @app.route("/api/user", methods=["post", 'get'])
 def users_page():
@@ -105,6 +107,7 @@ def user_page(u_id):
         return 'Пользователь удален'
     # добавить метод PUT
     # В них реализовать изменение пользователя
+    # Святослав
 
 
 @app.route("/api/cart", methods=["post",'get'])
@@ -119,5 +122,6 @@ def carts_page():
     #методы POST
 
 #endpoint "/api/cart/id"
+#Александр
 
 app.run(debug=True)
