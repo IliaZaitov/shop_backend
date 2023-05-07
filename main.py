@@ -52,18 +52,48 @@ def good_page():
         for good in goods:
             listgoods.append(good.json)
         return jsonify(listgoods)
-    #добавить метод POST
-    #В нем реализовать добавление товара
-    #Григорий
+    if request.method == "POST":
+        name = request.json['name']
+        price = request.json['price']
+        quantity = request.json['quantity']
+        good = User.query.filter_by(name=name).first()
+        if good:
+            return jsonify({"error": "Good already exists"})
+        good = Good(name, price, quantity)
+        db.session.add(good)
+        db.session.commit()
+        return jsonify({"message": "Good created successfully"})
+
 
 @app.route("/api/good/<g_id>", methods = ["get","put","delete"])
 def good_instance_page(g_id):
     if request.method == "GET":
         good = Good.query.filter_by(id=g_id).first()
         return good.json
-    # добавить методы PUT и DELETE
-    # В них реализовать изменение и удаление товара
-    # Иван
+    if request.method == "DELETE":
+        if current_user.is_admin:
+            good = Good.query.filter_by(id=g_id).first_or_404()
+            db.session.delete(good)
+            db.session.commit()
+            return jsonify({"message": "Good deleted successfully"})
+        else:
+            return jsonify({"error": "Admin only"})
+    if request.method == "PUT":
+        if current_user.is_admin:
+            name = request.json['name']
+            price = request.json['price']
+            description = request.json['description']
+            quantity = request.json['quantity']
+            good = Good.query.filter_by(id=g_id).first_or_404()
+            good.name = name
+            good.price = price
+            good.description = description
+            good.max_quantity = quantity
+            db.session.add(good)
+            db.session.commit()
+            return jsonify({"message": "Good updated successfully"})
+        else:
+            return jsonify({"error": "Admin only"})
 
 @app.route("/api/user", methods=["post", 'get'])
 def users_page():
@@ -123,5 +153,18 @@ def carts_page():
 
 #endpoint "/api/cart/id"
 #Александр
-
+@app.route('/api/cart/<c_id>', methods=['put','get','delete'])
+def cart_page(c_id):
+    cart = Cart.query.filter_by(id=c_id).first_or_404()
+    if request.method == "PUT":
+        if cart.user_id == current_user:
+            good_id = request.json['good_id']
+            quantity = request.json['quantity']
+            cart.quantity = quantity
+            cart.good_id = good_id
+            db.session.add(cart)
+            db.session.commit()
+            return jsonify({"message": "Cart updated successfully"})
+        else:
+            return jsonify({"error": "Admin only"})
 app.run(debug=True)

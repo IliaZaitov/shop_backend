@@ -8,7 +8,7 @@ db = SQLAlchemy()
 class Good(db.Model):
     __tablename__ = "goods"
     id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(50), nullable=False, unique = True)
     description = db.Column(db.String(500))
     price = db.Column(db.Float(), nullable=False)
     max_quantity = db.Column(db.Integer(), nullable=False)
